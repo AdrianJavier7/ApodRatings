@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Foto de hoy{% endblock %}
+
+{% block body %}
+    <div class="uk-section uk-section-medium uk-background-cover uk-light uk-flex uk-flex-bottom"
+         style="background-image: linear-gradient(to bottom, rgba(0,0,0,0.2), #222), url({{ foto_astral.url }}); height: 250px;">
+        <div class="uk-container uk-width-1-1">
+            <span class="uk-label uk-margin-small-bottom" style="background: #1e87f0;">NASA Astronomy</span>
+            <h1 class="uk-heading-small uk-margin-remove-top">Exploración Diaria</h1>
+        </div>
+    </div>
+
+    <div class="uk-container uk-container-small uk-margin-large-top uk-margin-large-bottom">
+        <div class="uk-card uk-card-default uk-grid-collapse uk-child-width-1-2@m uk-box-shadow-xlarge uk-border-rounded" uk-grid>
+
+            <div class="uk-card-media-left uk-cover-container uk-border-rounded">
+                <img src="{{ foto_astral.url }}" alt="{{ foto_astral.title }}" uk-cover>
+                <canvas width="600" height="600"></canvas>
+            </div>
+
+            <div>
+                <div class="uk-card-body">
+                    <h2 class="uk-card-title uk-text-bold uk-margin-remove-bottom">{{ foto_astral.title }}</h2>
+                    <p class="uk-article-meta uk-margin-small-top">
+                        <span uk-icon="icon: calendar; ratio: 0.8"></span> {{ foto_astral.date }}
+                    </p>
+
+                    <hr class="uk-divider-small">
+
+                    <div class="uk-panel uk-margin-medium-top">
+                        <p class="uk-text-justify uk-dropcap">{{ foto_astral.explanation }}</p>
+                    </div>
+
+                    <div class="uk-margin-large-top">
+                        <div class="uk-grid-small uk-child-width-expand@s" uk-grid>
+                            <div>
+                                <a href="{{ foto_astral.url }}" target="_blank" class="uk-button uk-button-primary uk-border-pill uk-width-1-1">
+                                    <span uk-icon="icon: expand" class="uk-margin-small-right"></span>
+                                    Resolución
+                                </a>
+                            </div>
+                            <div>
+                                <a href="#" class="uk-button uk-button-default uk-border-pill uk-width-1-1">
+                                    <span uk-icon="icon: file-edit" class="uk-margin-small-right"></span>
+                                    Hacer reseña
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

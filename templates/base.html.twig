@@ -19,7 +19,83 @@
 </head>
 
 <body>
-{% block body %}{% endblock %}
+
+
+{% block navbar %}
+    <nav class="uk-navbar-container uk-light"
+         style="background: rgba(15, 15, 27, 0.95); border-bottom: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px);">
+
+        <div class="uk-container uk-container-expand">
+            <div class="uk-navbar" uk-navbar>
+
+                <!-- IZQUIERDA -->
+                <div class="uk-navbar-left">
+
+                    <a class="uk-navbar-item uk-logo uk-margin-right" href="/">
+                        <img src="{{ asset('images/LogoApodlySolo.png') }}" alt="Logo" width="40" class="uk-margin-small-right">
+                        <span class="uk-text-bold uk-text-uppercase" style="letter-spacing: 2px;">Apodly</span>
+                    </a>
+
+                    <ul class="uk-navbar-nav">
+                        <li>
+                            <a href="#">
+                                Reviews <span uk-navbar-parent-icon></span>
+                            </a>
+                            <div class="uk-navbar-dropdown">
+                                <ul class="uk-nav uk-navbar-dropdown-nav">
+                                    <li class="uk-nav-header uk-light">Fotos</li>
+                                    <li><a href="/foto/astral">Galería</a></li>
+                                    <li><a href="/foto/diaria">Misión de Hoy</a></li>
+                                    <li class="uk-nav-divider"></li>
+                                    <li><a href="#">Favoritos</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li><a href="/admin">Control</a></li>
+                        <li><a href="/categorias"></a>/li>
+                    </ul>
+
+                </div>
+
+                <!-- DERECHA -->
+                <div class="uk-navbar-right">
+
+                    {% if app.user %}
+                        <div class="uk-navbar-item">
+                            <button class="uk-button uk-button-text uk-text-capitalize" type="button">
+                                {{ app.user.userIdentifier }}
+                                <span uk-icon="chevron-down"></span>
+                            </button>
+
+                            <div uk-dropdown="mode: click; pos: bottom-right">
+                                <ul class="uk-nav uk-dropdown-nav">
+                                    <li><a href="/logout" class="uk-text-danger">Cerrar Sesión</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="uk-navbar-item">
+                            <a href="{{ path('app_login') }}"
+                               class="uk-button uk-button-primary uk-border-rounded">
+                                Entrar
+                            </a>
+                        </div>
+                    {% endif %}
+
+                </div>
+
+            </div>
+        </div>
+    </nav>
+
+{% endblock %}
+
+
+{% block body %}
+
+
+
+{% endblock %}
 
 {# UIKit JS #}
 <script src="https://cdn.jsdelivr.net/npm/uikit@3.16.13/dist/js/uikit.min.js"></script>

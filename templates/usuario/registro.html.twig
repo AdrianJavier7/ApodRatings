@@ -1,0 +1,78 @@
+{% extends 'base.html.twig' %}
+{% block navbar %}{% endblock %}
+
+{% block title %}Unirse a la Misión{% endblock %}
+
+{% block body %}
+    <div class="uk-section uk-flex uk-flex-middle"
+         uk-height-viewport
+         style="background: radial-gradient(circle at center, #1a1a2e 0%, #0f0f1b 100%);">
+
+        <div class="uk-container">
+            <div class="uk-width-large uk-margin-auto">
+
+
+                <div class="uk-card uk-card-body uk-border-rounded uk-light" style="border: 1px solid white;">
+
+
+                <div class="uk-text-center uk-margin-medium-bottom">
+                        <h2 class="uk-h3 uk-text-bold uk-margin-remove">Nueva Cuenta</h2>
+                        <p class="uk-text-meta" style="color: #a0a0a0;">Navega el universo.</p>
+                    </div>
+
+                    <form method="POST" >
+                        <div class="uk-margin">
+                            <div class="uk-inline uk-width-1-1">
+                                <span class="uk-form-icon" uk-icon="icon: mail" style="color: #1e87f0;"></span>
+                                <input class="uk-input uk-border-rounded"
+                                       type="email"
+                                       name="email"
+                                       id="email"
+                                       placeholder="Email"
+                                       style="background: rgba(0,0,0,0.2); border-color: rgba(255,255,255,0.1); color: #fff;">
+                            </div>
+                            {% for mensaje in app.flashes('error') %}
+                                <div class="alert alert-danger">
+                                    {{ mensaje }}
+                                </div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="uk-margin">
+                            <div class="uk-inline uk-width-1-1">
+                                <span class="uk-form-icon" uk-icon="icon: lock" style="color: #1e87f0;"></span>
+                                <input class="uk-input uk-border-rounded"
+                                       type="password"
+                                       name="password"
+                                       id="password"
+                                       placeholder="Contraseña"
+                                       style="background: rgba(0,0,0,0.2); border-color: rgba(255,255,255,0.1); color: #fff;">
+                            </div>
+                        </div>
+
+                        <div class="uk-margin-medium-top">
+                            <button class="uk-button uk-button-primary uk-width-1-1 uk-border-rounded uk-text-bold"
+                                    style="box-shadow: 0 5px 15px rgba(30, 135, 240, 0.3);"
+                                    type="submit">
+                                DESPEGAR
+                            </button>
+                        </div>
+
+                        <div class="uk-text-center uk-margin-top">
+                            <a href="/login" class="uk-text-small uk-link-reset" style="color: #888;">
+                                ¿Ya tienes coordenadas? <span style="color: #1e87f0;">Log In</span>
+                            </a>
+                        </div>
+                    </form>
+
+                </div>
+
+
+                <p class="uk-text-center uk-text-small uk-margin-top" style="color: rgba(255,255,255,0.2); letter-spacing: 2px;">
+                    EST. 2026 • NASA API
+                </p>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

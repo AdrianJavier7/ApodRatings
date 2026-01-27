@@ -11,7 +11,7 @@ final class ReviewController extends AbstractController
     #[Route('/review', name: 'app_review')]
     public function index(): Response
     {
-        return $this->render('review/index.html.twig', [
+        return $this->render('review/todos.html.twig', [
             'controller_name' => 'ReviewController',
         ]);
     }

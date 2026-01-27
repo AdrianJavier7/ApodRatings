@@ -6,13 +6,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-final class RankingController extends AbstractController
+final class CategoriaController extends AbstractController
 {
-    #[Route('/ranking', name: 'app_ranking')]
+    #[Route('/categoria', name: 'app_categoria')]
     public function index(): Response
     {
-        return $this->render('ranking/todos.html.twig', [
-            'controller_name' => 'RankingController',
+        return $this->render('categoria/index.html.twig', [
+            'controller_name' => 'CategoriaController',
         ]);
     }
 }

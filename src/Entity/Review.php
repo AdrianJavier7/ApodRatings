@@ -14,10 +14,10 @@ class Review
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::TEXT)]
+    #[ORM\Column(name:"comentario",type: Types::TEXT)]
     private ?string $comentario = null;
 
-    #[ORM\Column(type: Types::DECIMAL, precision: 2, scale: 1)]
+    #[ORM\Column(name:"estrellas", type: Types::DECIMAL, precision: 2, scale: 1)]
     private ?string $estrellas = null;
 
     #[ORM\ManyToOne(inversedBy: 'reviews')]

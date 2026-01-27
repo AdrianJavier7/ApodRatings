@@ -19,7 +19,7 @@ class RankingFoto
     #[ORM\ManyToOne]
     private ?Ranking $ranking = null;
 
-    #[ORM\Column]
+    #[ORM\Column (name:"posicion", type: 'integer')]
     private ?int $posicion = null;
 
     public function getId(): ?int

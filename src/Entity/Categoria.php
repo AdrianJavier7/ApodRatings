@@ -7,19 +7,23 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\InverseJoinColumn;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\JoinTable;
 
 #[ORM\Entity(repositoryClass: CategoriaRepository::class)]
+#[ORM\Table(name: 'categoria', schema: 'apodnasa')]
 class Categoria
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
+    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(name: "nombre" ,length: 255)]
     private ?string $nombre = null;
 
-    #[ORM\Column(type: Types::TEXT)]
+    #[ORM\Column(name: "imagen" ,type: Types::TEXT)]
     private ?string $imagen = null;
 
     /**
@@ -31,7 +35,10 @@ class Categoria
     /**
      * @var Collection<int, FotoAstral>
      */
-    #[ORM\ManyToMany(targetEntity: FotoAstral::class, mappedBy: 'categorias')]
+    #[JoinTable(name: 'categoria_foto')]
+    #[JoinColumn(name: 'id_categoria', referencedColumnName: 'id')]
+    #[InverseJoinColumn(name: 'id_foto_astral', referencedColumnName: 'id')]
+    #[ORM\ManyToMany(targetEntity: FotoAstral::class)]
     private Collection $fotoAstrals;
 
     public function __construct()

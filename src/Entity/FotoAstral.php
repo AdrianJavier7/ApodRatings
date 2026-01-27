@@ -16,7 +16,7 @@ class FotoAstral
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[ORM\Column(name: "date", type: Types::DATE_MUTABLE)]
     private ?\DateTime $date = null;
 
     /**
@@ -30,6 +30,24 @@ class FotoAstral
      */
     #[ORM\ManyToMany(targetEntity: Categoria::class, inversedBy: 'fotoAstrals')]
     private Collection $categorias;
+
+    #[ORM\Column(length: 100, nullable: true)]
+    private ?string $copyright = null;
+
+    #[ORM\Column(type: Types::TEXT)]
+    private ?string $explanation = null;
+
+    #[ORM\Column(type: Types::TEXT)]
+    private ?string $hdurl = null;
+
+    #[ORM\Column(length: 100)]
+    private ?string $mediaType = null;
+
+    #[ORM\Column(length: 150)]
+    private ?string $title = null;
+
+    #[ORM\Column(type: Types::TEXT)]
+    private ?string $url = null;
 
     public function __construct()
     {
@@ -111,6 +129,78 @@ class FotoAstral
     public function removeCategoria(Categoria $categoria): static
     {
         $this->categorias->removeElement($categoria);
+
+        return $this;
+    }
+
+    public function getCopyright(): ?string
+    {
+        return $this->copyright;
+    }
+
+    public function setCopyright(?string $copyright): static
+    {
+        $this->copyright = $copyright;
+
+        return $this;
+    }
+
+    public function getExplanation(): ?string
+    {
+        return $this->explanation;
+    }
+
+    public function setExplanation(string $explanation): static
+    {
+        $this->explanation = $explanation;
+
+        return $this;
+    }
+
+    public function getHdurl(): ?string
+    {
+        return $this->hdurl;
+    }
+
+    public function setHdurl(string $hdurl): static
+    {
+        $this->hdurl = $hdurl;
+
+        return $this;
+    }
+
+    public function getMediaType(): ?string
+    {
+        return $this->mediaType;
+    }
+
+    public function setMediaType(string $mediaType): static
+    {
+        $this->mediaType = $mediaType;
+
+        return $this;
+    }
+
+    public function getTitle(): ?string
+    {
+        return $this->title;
+    }
+
+    public function setTitle(string $title): static
+    {
+        $this->title = $title;
+
+        return $this;
+    }
+
+    public function getUrl(): ?string
+    {
+        return $this->url;
+    }
+
+    public function setUrl(string $url): static
+    {
+        $this->url = $url;
 
         return $this;
     }
