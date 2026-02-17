@@ -30,11 +30,10 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    {# Ordenamos las fotos por posición antes de mostrarlas #}
                                     {% for rf in ranking.rankingFotos|sort((a, b) => a.posicion <=> b.posicion) %}
                                         <tr>
                                             <td>
-                                                <span class="uk-badge" style="background: #1e87f0; width: 30px; height: 30px; line-height: 30px;">
+                                                <span class="uk-badge" style="background: white; width: 30px; height: 30px; line-height: 30px;">
                                                     {{ rf.posicion }}
                                                 </span>
                                             </td>
@@ -53,7 +52,7 @@
             {% endif %}
 
             <div class="uk-margin-large-top">
-                <a href="{{ path('app_categoria') }}" class="uk-button uk-button-primary uk-border-rounded">
+                <a href="{{ path('app_categoria_mostrar') }}" class="uk-button uk-button-primary uk-border-rounded">
                     Clasificar más Sectores
                 </a>
             </div>

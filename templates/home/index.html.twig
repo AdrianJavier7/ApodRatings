@@ -5,7 +5,6 @@
 {% block body %}
     <div class="uk-background-secondary uk-light">
 
-        {# SECCIÓN HERO #}
         <div class="uk-section uk-section-xlarge uk-flex uk-flex-middle"
              uk-height-viewport="offset-bottom: 20"
              style="background: radial-gradient(circle at center, #1b2735 0%, #090a0f 100%);">
@@ -13,29 +12,23 @@
             <div class="uk-container">
                 <div class="uk-grid-large uk-flex-middle uk-text-center uk-text-left@m" uk-grid>
 
-                    {# Logo con animación #}
                     <div class="uk-width-1-1 uk-width-auto@m uk-flex uk-flex-center">
                         <div uk-scrollspy="cls: uk-animation-scale-up; delay: 200">
                             <img src="{{ asset('images/LogoApodlySolo.png') }}"
                                  alt="Apodly Logo"
                                  width="250"
-                                 class="uk-dropnav-shadow"
                                  style="filter: drop-shadow(0 0 20px rgba(30, 135, 240, 0.4));">
                         </div>
                     </div>
 
-                    {# Texto y Botones #}
                     <div class="uk-width-1-1 uk-width-expand@m">
                         <div uk-scrollspy="cls: uk-animation-slide-right-medium; delay: 400">
-
                             <h1 class="uk-heading-medium uk-text-bold uk-margin-remove-top">
                                 Explora el <span style="color: #1e87f0;">Universo</span>
                             </h1>
-
                             <p class="uk-text-lead uk-text-muted uk-margin-medium-bottom">
                                 Tu portal diario a la astronomía. Imágenes distribuidas por la NASA, explicadas y valoradas por la comunidad.
                             </p>
-
                             <div class="uk-grid-small uk-child-width-auto uk-flex-center uk-flex-left@m" uk-grid>
                                 <div>
                                     <a href="/foto/astral" class="uk-button uk-button-primary uk-button-large uk-border-rounded">
@@ -48,7 +41,6 @@
                                     </a>
                                 </div>
                             </div>
-
                         </div>
                     </div>
 
@@ -56,7 +48,6 @@
             </div>
         </div>
 
-        {# SECCIÓN PANEL (Sin márgenes intermedios) #}
         <div id="seccion-menu" class="uk-section uk-section-large" style="background-color: #090a0f;">
             <div class="uk-container">
 
@@ -68,44 +59,43 @@
                      uk-grid
                      uk-scrollspy="cls: uk-animation-slide-bottom-small; target: > div; delay: 100">
 
-                    {# Card Categorías #}
                     <div>
-                        <a href="{{ path('app_categoria') }}" class="uk-link-toggle">
+                        <a href="{{ path('app_categoria_mostrar') }}" class="uk-link-toggle">
                             <div class="uk-card uk-card-secondary uk-card-body uk-card-hover uk-border-rounded uk-text-center uk-transition-toggle">
                                 <div class="uk-margin-bottom">
-                                    <span class="uk-icon-button uk-button-primary uk-transition-scale-up" uk-icon="icon: thumbnails; ratio: 2"></span>
+                                    <div class="uk-inline">
+                                        <span class="uk-text-primary uk-transition-scale-up" uk-icon="icon: thumbnails; ratio: 3"></span>
+                                    </div>
                                 </div>
-                                <h3 class="uk-card-title uk-text-bold uk-margin-remove">Categorías</h3>
+                                <h3 class="uk-card-title uk-text-bold uk-margin-remove" style="color: #fff;">Categorías</h3>
                                 <p class="uk-text-meta">Organiza tus astros favoritos</p>
                             </div>
                         </a>
                     </div>
 
-                    {# Card Top Valoradas #}
                     <div>
-                        <a href="#" class="uk-link-toggle">
+                        <a href="/foto/astral" class="uk-link-toggle">
                             <div class="uk-card uk-card-secondary uk-card-body uk-card-hover uk-border-rounded uk-text-center uk-transition-toggle">
                                 <div class="uk-margin-bottom">
-                                    <span class="uk-icon-button uk-transition-scale-up"
-                                          style="background: rgba(240, 80, 110, 0.2); color: #f0506e;"
-                                          uk-icon="icon: star; ratio: 2"></span>
+                                    <div class="uk-inline">
+                                        <span class="uk-transition-scale-up" style="color: #f0506e;" uk-icon="icon: star; ratio: 3"></span>
+                                    </div>
                                 </div>
-                                <h3 class="uk-card-title uk-text-bold uk-margin-remove">Top Valoradas</h3>
+                                <h3 class="uk-card-title uk-text-bold uk-margin-remove" style="color: #fff;">Galería</h3>
                                 <p class="uk-text-meta">Lo mejor según la comunidad</p>
                             </div>
                         </a>
                     </div>
 
-                    {# Card Comunidad #}
                     <div>
-                        <a href="#" class="uk-link-toggle">
+                        <a href="/foto/astral" class="uk-link-toggle">
                             <div class="uk-card uk-card-secondary uk-card-body uk-card-hover uk-border-rounded uk-text-center uk-transition-toggle">
                                 <div class="uk-margin-bottom">
-                                    <span class="uk-icon-button uk-transition-scale-up"
-                                          style="background: rgba(50, 210, 150, 0.2); color: #32d296;"
-                                          uk-icon="icon: users; ratio: 2"></span>
+                                    <div class="uk-inline">
+                                        <span class="uk-transition-scale-up" style="color: #fff;" uk-icon="icon: users; ratio: 3"></span>
+                                    </div>
                                 </div>
-                                <h3 class="uk-card-title uk-text-bold uk-margin-remove">Comunidad</h3>
+                                <h3 class="uk-card-title uk-text-bold uk-margin-remove" style="color: #fff;">Comunidad</h3>
                                 <p class="uk-text-meta">Reseñas y perfiles</p>
                             </div>
                         </a>
@@ -115,7 +105,6 @@
             </div>
         </div>
 
-        {# Footer sencillo para cerrar el diseño #}
         <footer class="uk-section uk-section-small uk-text-center">
             <hr class="uk-divider-icon uk-margin-medium">
             <p class="uk-text-small uk-text-muted">EST. 2026 • APODLY SPACE PROGRAM</p>

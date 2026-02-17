@@ -18,15 +18,14 @@
             <div class="uk-card uk-card-secondary uk-card-body uk-border-rounded uk-box-shadow-large"
                  style="background: rgba(25, 25, 45, 0.6); border: 1px solid rgba(30, 135, 240, 0.2); backdrop-filter: blur(10px);">
 
-                {# Usamos form_start si usas Symfony Forms, si es HTML puro: <form method="POST"> #}
                 <form method="POST" class="uk-form-stacked">
 
                     {# Campo de Estrellas (Puntuación) #}
                     <div class="uk-margin">
                         <label class="uk-form-label uk-light uk-text-bold" for="estrellas">Puntuación Estelar</label>
-                        <div class="uk-inline uk-width-1-1">
-                            <span class="uk-form-icon" uk-icon="icon: star" style="color: #f0ad4e;"></span>
-                            <input class="uk-range uk-margin-small-top"
+                        <div class="uk-form-controls uk-margin-small-top">
+                            {# Barra corregida: Estilo inline para asegurar visibilidad en fondo oscuro #}
+                            <input class="uk-range"
                                    type="range"
                                    value="5.0"
                                    min="0"
@@ -34,17 +33,22 @@
                                    step="0.5"
                                    name="estrellas"
                                    id="estrellas"
-                                   oninput="val.value = this.value">
-                            <div class="uk-text-center uk-margin-small-top">
-                                <output id="val" class="uk-text-h2 uk-text-bold uk-text-warning">5.0</output>
-                                <span class="uk-text-warning">/ 5.0</span>
+                                   style="background: rgba(255,255,255,0.1); height: 8px; border-radius: 5px;">
+
+                            <div class="uk-flex uk-flex-between uk-margin-small-top uk-text-meta uk-light">
+                                <span>0</span>
+                                <span>1</span>
+                                <span>2</span>
+                                <span>3</span>
+                                <span>4</span>
+                                <span class="uk-text-warning">5</span>
                             </div>
                         </div>
                     </div>
 
                     {# Campo de Comentario #}
                     <div class="uk-margin">
-                        <label class="uk-form-label uk-light uk-text-bold" for="comentario">Bitácora del Astrónomo (Comentario)</label>
+                        <label class="uk-form-label uk-light uk-text-bold" for="comentario">Comentario</label>
                         <div class="uk-form-controls">
                             <textarea class="uk-textarea uk-border-rounded"
                                       name="comentario"

@@ -6,20 +6,32 @@
     <div class="uk-section uk-light" style="background: #0b0d17; min-height: 100vh;">
         <div class="uk-container">
 
-            <div class="uk-margin-large-bottom">
-                <h1 class="uk-text-bold uk-margin-small-bottom">Exploración Cósmica</h1>
-                <p class="uk-text-muted uk-margin-remove">Últimas 30 capturas de la NASA</p>
-                <hr class="uk-divider-small">
-            </div>
+            <div class="uk-flex uk-flex-between uk-flex-bottom uk-flex-wrap uk-margin-large-bottom">
+                <div>
+                    <h1 class="uk-text-bold uk-margin-remove">Exploración Cósmica</h1>
+                    <p class="uk-text-muted uk-margin-remove">Últimas 30 capturas de la NASA</p>
+                </div>
 
+                <div class="uk-margin-small-top">
+                    <ul class="uk-subnav uk-subnav-pill" uk-margin>
+                        <li class="{{ orden_actual == 'fecha_desc' ? 'uk-active' : '' }}">
+                            <a href="{{ path('app_foto_astral', {orden: 'fecha_desc'}) }}">Más recientes</a>
+                        </li>
+                        <li class="{{ orden_actual == 'fecha_asc' ? 'uk-active' : '' }}">
+                            <a href="{{ path('app_foto_astral', {orden: 'fecha_asc'}) }}">Más antiguas</a>
+                        </li>
+                        <li class="{{ orden_actual == 'valoracion_desc' ? 'uk-active' : '' }}">
+                            <a href="{{ path('app_foto_astral', {orden: 'valoracion_desc'}) }}">Mejor valoradas</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
 
             <div class="uk-child-width-1-1 uk-child-width-1-2@s uk-child-width-1-3@m uk-grid-medium" uk-grid>
                 {% for foto in lista_foto_astral %}
                     {% set imageUrl = foto.hdurl ?? foto.url ?? null %}
-
-                    {# Lógica para calcular la media de estrellas #}
                     {% set total_estrellas = 0 %}
-                    {% set resenas = foto.reviews %} {# Accedemos a la relación getReviews() #}
+                    {% set resenas = foto.reviews %}
                     {% set num_resenas = resenas|length %}
 
                     {% if num_resenas > 0 %}
@@ -68,9 +80,9 @@
                                 </div>
 
                                 <div class="uk-flex uk-flex-between uk-flex-middle uk-margin-small-top">
-                        <span class="uk-text-meta" style="font-size: 0.8rem;">
-                            <span uk-icon="icon: calendar; ratio: 0.7"></span> {{ foto.date|date('d M, Y') }}
-                        </span>
+                                    <span class="uk-text-meta" style="font-size: 0.8rem;">
+                                        <span uk-icon="icon: calendar; ratio: 0.7"></span> {{ foto.date|date('d M, Y') }}
+                                    </span>
                                     <a href="{{ path('app_foto_astral_dentro', { date: foto.date|date('Y-m-d') }) }}"
                                        class="uk-text-primary uk-text-bold" style="font-size: 0.8rem; text-decoration: none;">
                                         REVIEW →

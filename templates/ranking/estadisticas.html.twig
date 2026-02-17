@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Estadísticas de Rankings{% endblock %}
+
+{% block body %}
+    <div class="uk-section uk-light" style="background: #0b0d17; min-height: 100vh;">
+        <div class="uk-container">
+
+            <h1 class="uk-heading-line uk-text-center uk-margin-large-bottom">
+                <span>Ranking Global de Posiciones</span>
+            </h1>
+
+            <div class="uk-grid-match uk-child-width-1-1" uk-grid>
+                <div>
+                    <div class="uk-card uk-card-secondary uk-card-body uk-border-rounded">
+                        <table class="uk-table uk-table-divider uk-table-middle">
+                            <thead>
+                            <tr>
+                                <th class="uk-table-shrink">Top</th>
+                                <th>Imagen</th>
+                                <th>Título</th>
+                                <th class="uk-text-center">Posición Media</th>
+                                <th class="uk-text-center">Participaciones</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for s in stats %}
+                                <tr>
+                                    <td class="uk-text-bold">
+                                        {% if loop.index == 1 %}
+                                            <span class="uk-label uk-label-warning">🥇 1º</span>
+                                        {% elseif loop.index == 2 %}
+                                            <span class="uk-label uk-label-divider">🥈 2º</span>
+                                        {% else %}
+                                            #{{ loop.index }}
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <img src="{{ s.url }}" width="60" class="uk-border-rounded">
+                                    </td>
+                                    <td class="uk-text-bold">{{ s.titulo }}</td>
+                                    <td class="uk-text-center">
+                                        <span class="uk-text-primary uk-text-lead">{{ s.mediaPosicion|number_format(1) }}</span>
+                                    </td>
+                                    <td class="uk-text-center">
+                                        <span class="uk-badge">{{ s.vecesRankeada }}</span> rankings
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}

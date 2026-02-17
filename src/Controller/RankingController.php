@@ -119,4 +119,21 @@ final class RankingController extends AbstractController
             'rankings' => $rankings
         ]);
     }
+
+    #[Route('/estadisticas', name: 'app_estadisticas')]
+    public function estadisticas(RankingFotoRepository $rfRepo): Response
+    {
+        $statsFotos = $rfRepo->createQueryBuilder('rf')
+            ->select('f.title as titulo', 'f.url as url', 'AVG(rf.posicion) as mediaPosicion', 'COUNT(rf.id) as vecesRankeada')
+            ->join('rf.fotoAstral', 'f')
+            ->groupBy('f.id')
+            ->orderBy('mediaPosicion', 'ASC')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult();
+
+        return $this->render('ranking/estadisticas.html.twig', [
+            'stats' => $statsFotos
+        ]);
+    }
 }

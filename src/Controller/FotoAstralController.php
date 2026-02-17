@@ -24,19 +24,31 @@ class FotoAstralController extends AbstractController
      * @throws ClientExceptionInterface
      */
     #[Route('/foto/astral', name: 'app_foto_astral')]
-    public function index(FotoAstralRepository $fotoAstralRepository): Response
+    public function index(FotoAstralRepository $fotoRepo, Request $request): Response
     {
-        $fecha_hoy = new \DateTime();
-        $fecha_limite = (clone $fecha_hoy)->modify('-30 days');
-        $lista_elementos = $fotoAstralRepository->createQueryBuilder('f')
+        $orden = $request->query->get('orden', 'fecha_desc');
+        $fecha_limite = (new \DateTime())->modify('-30 days');
+
+        $query = $fotoRepo->createQueryBuilder('f')
+            ->leftJoin('f.reviews', 'r')
+            ->select('f', 'AVG(r.estrellas) as HIDDEN media')
             ->where('f.date >= :limite')
             ->setParameter('limite', $fecha_limite)
-            ->orderBy('f.date', 'DESC')
-            ->getQuery()
-            ->getResult();
+            ->groupBy('f.id');
+
+        if ($orden === 'fecha_asc') {
+            $query->orderBy('f.date', 'ASC');
+        } elseif ($orden === 'valoracion_desc') {
+            $query->orderBy('media', 'DESC');
+        } else {
+            $query->orderBy('f.date', 'DESC');
+        }
+
+        $lista_elementos = $query->getQuery()->getResult();
 
         return $this->render('foto_astral/todos.html.twig', [
             'lista_foto_astral' => $lista_elementos,
+            'orden_actual' => $orden
         ]);
     }
 
