@@ -7,6 +7,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ReviewRepository::class)]
+#[ORM\Table(name: 'review')]
 class Review
 {
     #[ORM\Id]
@@ -14,18 +15,19 @@ class Review
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(name:"comentario",type: Types::TEXT)]
+    #[ORM\Column(name: "comentario", type: Types::TEXT)]
     private ?string $comentario = null;
 
-    #[ORM\Column(name:"estrellas", type: Types::DECIMAL, precision: 2, scale: 1)]
+    #[ORM\Column(name: "estrellas", type: Types::DECIMAL, precision: 2, scale: 1)]
     private ?string $estrellas = null;
 
     #[ORM\ManyToOne(inversedBy: 'reviews')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(name: 'id_usuario', referencedColumnName: 'id', nullable: false)]
     private ?Usuario $Usuario = null;
 
+
     #[ORM\ManyToOne(inversedBy: 'reviews')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(name: 'id_foto_astral', referencedColumnName: 'id', nullable: false)]
     private ?FotoAstral $fotoAstral = null;
 
     public function getId(): ?int

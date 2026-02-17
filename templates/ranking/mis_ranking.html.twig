@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mis Clasificaciones Cósmicas{% endblock %}
+
+{% block body %}
+    <div class="uk-section uk-light" style="background: #0f0f1b; min-height: 100vh;">
+        <div class="uk-container">
+            <h1 class="uk-text-bold uk-margin-large-bottom">Mis Rankings Guardados</h1>
+
+            {% if rankings is empty %}
+                <div class="uk-alert-warning" uk-alert>
+                    <p>Aún no has completado ningún ranking. ¡Ve a los sectores para empezar!</p>
+                </div>
+            {% else %}
+                <div class="uk-grid-medium uk-child-width-1-1" uk-grid>
+                    {% for ranking in rankings %}
+                        <div class="uk-card uk-card-secondary uk-card-body uk-border-rounded uk-margin-bottom" style="border-left: 5px solid #1e87f0;">
+                            <div class="uk-flex uk-flex-between uk-flex-middle uk-margin-small-bottom">
+                                <h2 class="uk-card-title uk-margin-remove uk-text-primary">{{ ranking.categoria.nombre }}</h2>
+                                <span class="uk-label uk-label-success">{{ ranking.rankingFotos|length }} Fotos Clasificadas</span>
+                            </div>
+
+                            <div class="uk-overflow-auto">
+                                <table class="uk-table uk-table-divider uk-table-middle uk-table-small">
+                                    <thead>
+                                    <tr>
+                                        <th class="uk-table-shrink">Pos.</th>
+                                        <th class="uk-table-shrink">Vista</th>
+                                        <th>Título de la Foto</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {# Ordenamos las fotos por posición antes de mostrarlas #}
+                                    {% for rf in ranking.rankingFotos|sort((a, b) => a.posicion <=> b.posicion) %}
+                                        <tr>
+                                            <td>
+                                                <span class="uk-badge" style="background: #1e87f0; width: 30px; height: 30px; line-height: 30px;">
+                                                    {{ rf.posicion }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <img src="{{ rf.fotoAstral.url }}" width="60" class="uk-border-rounded" alt="">
+                                            </td>
+                                            <td class="uk-text-emphasis">{{ rf.fotoAstral.title }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <div class="uk-margin-large-top">
+                <a href="{{ path('app_categoria') }}" class="uk-button uk-button-primary uk-border-rounded">
+                    Clasificar más Sectores
+                </a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

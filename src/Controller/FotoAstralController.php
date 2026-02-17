@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Repository\FotoAstralRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
@@ -23,17 +24,16 @@ class FotoAstralController extends AbstractController
      * @throws ClientExceptionInterface
      */
     #[Route('/foto/astral', name: 'app_foto_astral')]
-    public function index(HttpClientInterface $httpClient): Response
+    public function index(FotoAstralRepository $fotoAstralRepository): Response
     {
         $fecha_hoy = new \DateTime();
-        $fecha_hace_30_dias = (clone $fecha_hoy)->modify('-30 days');
-
-        $respuesta = $httpClient->request(
-            'GET',
-            'https://api.nasa.gov/planetary/apod?api_key=JUmT9kLz0PPTahUwzhRTGweJesmzj4fUN8P9gFdb&start_date=' . $fecha_hace_30_dias->format('Y-m-d') . '&end_date=' . $fecha_hoy->format('Y-m-d')
-        );
-
-        $lista_elementos = $respuesta->toArray();
+        $fecha_limite = (clone $fecha_hoy)->modify('-30 days');
+        $lista_elementos = $fotoAstralRepository->createQueryBuilder('f')
+            ->where('f.date >= :limite')
+            ->setParameter('limite', $fecha_limite)
+            ->orderBy('f.date', 'DESC')
+            ->getQuery()
+            ->getResult();
 
         return $this->render('foto_astral/todos.html.twig', [
             'lista_foto_astral' => $lista_elementos,
@@ -57,5 +57,42 @@ class FotoAstralController extends AbstractController
             'foto_astral' => $elemento,
         ]);
     }
+
+    #[Route('/foto-astral/{date}', name: 'app_foto_astral_dentro')]
+    public function dentro(string $date, FotoAstralRepository $fotoAstralRepository): Response
+    {
+        $usuario = $this->getUser();
+        $yaValorado = false;
+        $foto = null;
+        $resenas = [];
+
+        try {
+            $fecha = new \DateTime($date);
+            $foto = $fotoAstralRepository->findOneBy(['date' => $fecha]);
+
+            if ($foto) {
+                $resenas = $foto->getReviews();
+
+                if ($usuario) {
+                    foreach ($resenas as $resena) {
+                        if ($resena->getUsuario() === $usuario) {
+                            $yaValorado = true;
+                            break;
+                        }
+                    }
+                }
+            }
+        } catch (\Exception $e) {
+            $this->addFlash('error', 'Fecha no válida o error al cargar la foto astral.');
+             return $this->redirectToRoute('app_foto_astral');
+        }
+
+        return $this->render('foto_astral/dentro.html.twig', [
+            'foto_astral' => $foto,
+            'resenas' => $resenas,
+            'ya_valorado' => $yaValorado
+        ]);
+    }
+
 
 }

@@ -1,20 +1,81 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello ReviewController!{% endblock %}
+{% block title %}Valorar Foto - Apodly{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+    <div class="uk-section uk-flex uk-flex-middle"
+         uk-height-viewport="offset-bottom: 20"
+         style="background: radial-gradient(circle at center, #1b2735 0%, #090a0f 100%);">
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+        <div class="uk-container uk-container-small">
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>C:/Users/Jadrix/PhpstormProjects/FoodRating/src/Controller/ReviewController.php</code></li>
-        <li>Your template at <code>C:/Users/Jadrix/PhpstormProjects/FoodRating/templates/review/index.html.twig</code></li>
-    </ul>
-</div>
+            {# Encabezado con la referencia a la foto #}
+            <div class="uk-text-center uk-margin-large-bottom">
+                <h1 class="uk-heading-small uk-light uk-text-bold">Misión: {{ fecha }}</h1>
+                <p class="uk-text-lead uk-text-primary">¿Qué te ha parecido esta captura del cosmos?</p>
+            </div>
+
+            <div class="uk-card uk-card-secondary uk-card-body uk-border-rounded uk-box-shadow-large"
+                 style="background: rgba(25, 25, 45, 0.6); border: 1px solid rgba(30, 135, 240, 0.2); backdrop-filter: blur(10px);">
+
+                {# Usamos form_start si usas Symfony Forms, si es HTML puro: <form method="POST"> #}
+                <form method="POST" class="uk-form-stacked">
+
+                    {# Campo de Estrellas (Puntuación) #}
+                    <div class="uk-margin">
+                        <label class="uk-form-label uk-light uk-text-bold" for="estrellas">Puntuación Estelar</label>
+                        <div class="uk-inline uk-width-1-1">
+                            <span class="uk-form-icon" uk-icon="icon: star" style="color: #f0ad4e;"></span>
+                            <input class="uk-range uk-margin-small-top"
+                                   type="range"
+                                   value="5.0"
+                                   min="0"
+                                   max="5"
+                                   step="0.5"
+                                   name="estrellas"
+                                   id="estrellas"
+                                   oninput="val.value = this.value">
+                            <div class="uk-text-center uk-margin-small-top">
+                                <output id="val" class="uk-text-h2 uk-text-bold uk-text-warning">5.0</output>
+                                <span class="uk-text-warning">/ 5.0</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    {# Campo de Comentario #}
+                    <div class="uk-margin">
+                        <label class="uk-form-label uk-light uk-text-bold" for="comentario">Bitácora del Astrónomo (Comentario)</label>
+                        <div class="uk-form-controls">
+                            <textarea class="uk-textarea uk-border-rounded"
+                                      name="comentario"
+                                      id="comentario"
+                                      rows="5"
+                                      placeholder="Escribe tus impresiones sobre la nebulosa, galaxia o fenómeno..."
+                                      style="background: rgba(0,0,0,0.3); color: #fff; border-color: rgba(255,255,255,0.1);"
+                                      required></textarea>
+                        </div>
+                    </div>
+
+                    <div class="uk-grid-small uk-child-width-1-2@s uk-margin-medium-top" uk-grid>
+                        <div>
+                            <a href="{{ path('app_foto_astral_dentro', {'date': fecha}) }}" class="uk-button uk-button-default uk-width-1-1 uk-border-rounded">
+                                <span uk-icon="arrow-left"></span> Volver
+                            </a>
+                        </div>
+                        <div>
+                            <button type="submit" class="uk-button uk-button-primary uk-width-1-1 uk-border-rounded uk-text-bold">
+                                ENVIAR RESEÑA <span uk-icon="check" class="uk-margin-small-left"></span>
+                            </button>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+
+            <p class="uk-text-center uk-text-meta uk-margin-medium-top" style="color: rgba(255,255,255,0.3);">
+                Tus coordenadas y usuario serán registrados automáticamente en la base de datos de Apodly.
+            </p>
+
+        </div>
+    </div>
 {% endblock %}

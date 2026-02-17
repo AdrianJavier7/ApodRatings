@@ -1,0 +1,106 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ foto_astral.title }}{% endblock %}
+
+{% block body %}
+    <div class="uk-section uk-light" style="background: #0b0d17; min-height: 100vh;">
+
+        <div class="uk-container uk-container-small">
+
+            <div class="uk-text-center uk-margin-large-bottom">
+                <h1 class="uk-heading-small uk-text-bold uk-margin-remove-top">{{ foto_astral.title }}</h1>
+                <p class="uk-text-meta uk-text-large">
+                    <span uk-icon="calendar"></span> {{ foto_astral.date|date('d/m/Y') }}
+                </p>
+            </div>
+
+            <div class="uk-margin-large-bottom">
+                <div class="uk-inline uk-width-1-1 uk-box-shadow-xlarge" style="border-radius: 20px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1);">
+                    <img src="{{ foto_astral.url }}" class="uk-width-1-1" alt="{{ foto_astral.title }}" style="max-height: 500px; object-fit: cover;">
+                    <div class="uk-position-bottom-right uk-overlay uk-overlay-default uk-padding-small" style="background: rgba(0,0,0,0.6); border-top-left-radius: 10px;">
+                        <a href="{{ foto_astral.url }}" target="_blank" class="uk-button uk-button-text uk-text-small">
+                            <span uk-icon="expand"></span> Pantalla Completa
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="uk-grid-large" uk-grid>
+                <div class="uk-width-1-1">
+
+                    {# Texto de la explicación #}
+                    <div class="uk-panel uk-margin-large-bottom">
+                        <p class="uk-text-justify uk-dropcap" style="font-size: 1.15rem; line-height: 1.8; color: #d1d1d1;">
+                            {{ foto_astral.explanation }}
+                        </p>
+                    </div>
+
+                    <hr class="uk-divider-icon uk-margin-large">
+
+                    {# SECCIÓN DE ACCIÓN (Reseña) #}
+                    <div class="uk-flex uk-flex-between uk-flex-middle uk-margin-large-bottom">
+                        <h2 class="uk-text-bold uk-margin-remove">Exploradores</h2>
+
+                        {% if ya_valorado %}
+                            <div class="uk-text-success uk-text-bold uk-text-small">
+                                <span uk-icon="check" class="uk-margin-small-right"></span> HAS VALORADO ESTA IMAGEN
+                            </div>
+                        {% else %}
+                            <a href="{{ path('app_review', {fecha: foto_astral.date|date('Y-m-d')}) }}"
+                               class="uk-button uk-button-default uk-border-rounded"
+                               style="background: white; border: none; padding: 0 30px; color: black;">
+                                <span uk-icon="file-edit" class="uk-margin-small-right "></span> Escribir Reseña
+                            </a>
+                        {% endif %}
+                    </div>
+
+                    {# 4. LISTADO DE RESEÑAS #}
+                    <div class="uk-grid-medium uk-child-width-1-1" uk-grid>
+                        {% for resena in resenas %}
+                            <div class="uk-card uk-card-body uk-border-rounded uk-margin-small-bottom"
+                                 style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.05);">
+
+                                <div class="uk-flex uk-flex-between uk-flex-middle">
+                                    <div class="uk-flex uk-flex-middle">
+                                        <div class="uk-margin-small-right">
+                                            <div style="width: 35px; height: 35px; background: #1a1a2e; border: 1px solid #1e87f0; border-radius: 50%; display: flex; align-items: center; justify-content: center;" class="uk-text-bold uk-text-primary">
+                                                {{ resena.usuario.userIdentifier|slice(0,1)|upper }}
+                                            </div>
+                                        </div>
+                                        <span class="uk-text-bold">@{{ resena.usuario.userIdentifier }}</span>
+                                    </div>
+
+                                    <div>
+                                        {% set nota = resena.estrellas|default(0)|abs %}
+                                        {% for i in 1..5 %}
+                                            <span uk-icon="icon: star; ratio: 0.8"
+                                                  style="color: {{ i <= nota ? '#f8ce0b' : '#444' }} !important;">
+                                             </span>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+
+                                <p class="uk-margin-medium-top uk-text-muted uk-text-italic" style="border-left: 2px solid #1e87f0; padding-left: 15px;">
+                                    "{{ resena.comentario }}"
+                                </p>
+                            </div>
+                        {% else %}
+                            <div class="uk-text-center uk-padding-large">
+                                <p class="uk-text-muted">Aún no hay valoraciones para esta imagen.</p>
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                </div>
+            </div>
+
+            {# 5. BOTÓN VOLVER #}
+            <div class="uk-text-center uk-margin-xlarge-top">
+                <a href="javascript:history.back()" class="uk-button uk-button-text">
+                    <span uk-icon="arrow-left"></span> Volver a la exploración
+                </a>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}

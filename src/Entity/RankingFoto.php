@@ -6,20 +6,23 @@ use App\Repository\RankingFotoRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: RankingFotoRepository::class)]
+#[ORM\Table(name: 'ranking_foto', schema: 'apodnasa')]
 class RankingFoto
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
+    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne]
+    #[ORM\ManyToOne(targetEntity: FotoAstral::class)]
+    #[ORM\JoinColumn(name: 'id_foto_astral', referencedColumnName: 'id')]
     private ?FotoAstral $fotoAstral = null;
 
-    #[ORM\ManyToOne]
+    #[ORM\ManyToOne(targetEntity: Ranking::class, inversedBy: 'rankingFotos')]
+    #[ORM\JoinColumn(name: 'id_ranking', referencedColumnName: 'id')]
     private ?Ranking $ranking = null;
 
-    #[ORM\Column (name:"posicion", type: 'integer')]
+    #[ORM\Column(name: "posicion", type: 'integer')]
     private ?int $posicion = null;
 
     public function getId(): ?int
@@ -35,7 +38,6 @@ class RankingFoto
     public function setFotoAstral(?FotoAstral $fotoAstral): static
     {
         $this->fotoAstral = $fotoAstral;
-
         return $this;
     }
 
@@ -47,7 +49,6 @@ class RankingFoto
     public function setRanking(?Ranking $ranking): static
     {
         $this->ranking = $ranking;
-
         return $this;
     }
 
@@ -59,7 +60,6 @@ class RankingFoto
     public function setPosicion(int $posicion): static
     {
         $this->posicion = $posicion;
-
         return $this;
     }
 }

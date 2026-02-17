@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Sectores del Cosmos - Apodly{% endblock %}
+
+{% block body %}
+    <div class="uk-section uk-light" style="background: radial-gradient(circle at center, #1a1a2e 0%, #0f0f1b 100%); min-height: 100vh;">
+        <div class="uk-container">
+
+            <div class="uk-flex uk-flex-between uk-flex-bottom uk-margin-large-bottom">
+                <div>
+                    <h1 class="uk-text-bold uk-margin-remove">Sectores Clasificados</h1>
+                    <p class="uk-text-meta uk-text-uppercase" style="letter-spacing: 2px;">Explora el archivo por categorías</p>
+                </div>
+                <div>
+                    <a href="{{ path('app_categoria') }}" class="uk-button uk-button-default uk-border-rounded" style="border-color: rgba(255,255,255,0.2);">
+                        <span uk-icon="icon: plus; ratio: 0.8" class="uk-margin-small-right"></span>Gestionar
+                    </a>
+                </div>
+            </div>
+
+            <div class="uk-grid-medium uk-child-width-1-2@s uk-child-width-1-3@m uk-grid-match" uk-grid
+                 uk-scrollspy="cls: uk-animation-slide-bottom-small; target: .uk-card; delay: 100">
+
+                {% for cat in categorias %}
+                    <div>
+                        <a href="categoria/{{ cat.id }}/ranking" class="uk-link-reset">
+                            <div class="uk-card uk-card-default uk-overflow-hidden uk-transition-toggle"
+                                 style="background: transparent; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px;">
+
+                                <div class="uk-card-media-top uk-inline uk-width-1-1">
+                                    <img src="{{ cat.imagen }}" alt="{{ cat.nombre }}" style="height: 350px; width: 100%; object-fit: cover;"
+                                         class="uk-transition-scale-up uk-transition-opaque">
+
+                                    <div class="uk-overlay-primary uk-position-cover" style="background: rgba(0,0,0,0.4);"></div>
+
+                                    <div class="uk-position-center">
+                                        <h3 class="uk-text-bold uk-text-uppercase uk-margin-remove" style="letter-spacing: 3px; text-shadow: 0 4px 15px rgba(0,0,0,1);">
+                                            {{ cat.nombre }}
+                                        </h3>
+                                    </div>
+
+                                    <div class="uk-position-top-right uk-padding-small">
+                                        <span class="uk-label uk-border-rounded" style="background: rgba(30, 135, 240, 0.8); backdrop-filter: blur(5px);">
+                                            {{ cat.fotoAstrals|length }} items
+                                        </span>
+                                    </div>
+
+                                    <div class="uk-transition-fade uk-position-bottom-center uk-margin-small-bottom">
+                                        <span uk-icon="icon: chevron-down; ratio: 1.5"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                {% else %}
+                    <div class="uk-width-1-1">
+                        <div class="uk-placeholder uk-text-center uk-light" style="background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.1);">
+                            <span uk-icon="icon: search; ratio: 2"></span>
+                            <p>No se han encontrado sectores en la base de datos.</p>
+                        </div>
+                    </div>
+                {% endfor %}
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,71 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="uk-section uk-light" style="background: radial-gradient(circle at center, #1a1a2e 0%, #0f0f1b 100%); min-height: 100vh;">
+        <div class="uk-container uk-container-large">
+
+            <h1 class="uk-heading-line uk-text-center uk-margin-large-bottom"><span>Panel de Categorización</span></h1>
+
+            <div class="uk-grid-match uk-child-width-1-2@m" uk-grid>
+
+
+                <div>
+                    <div class="uk-card uk-card-default uk-card-body" style="background: rgba(15, 15, 27, 0.85); border: 1px solid rgba(255,255,255,0.1); border-radius: 15px;">
+                        <h3 class="uk-card-title uk-text-bold uk-light">Nueva Categoría</h3>
+                        <form action="{{ path('app_categoria') }}" method="POST" class="uk-form-stacked">
+                            <div class="uk-margin">
+                                <label class="uk-form-label">Nombre</label>
+                                <input class="uk-input uk-border-rounded" name="nombre_categoria" type="text" style="background: rgba(255,255,255,0.05); color: #fff;" required>
+                            </div>
+                            <div class="uk-margin">
+                                <label class="uk-form-label">URL Portada</label>
+                                <input class="uk-input uk-border-rounded" name="foto_categoria" type="url" style="background: rgba(255,255,255,0.05); color: #fff;" required>
+                            </div>
+                            <button type="submit" class="uk-button uk-button-primary uk-width-1-1 uk-border-rounded">Guardar</button>
+                        </form>
+                    </div>
+                </div>
+
+
+                <div>
+                    <div class="uk-card uk-card-default uk-card-body" style="background: rgba(15, 15, 27, 0.85); border: 1px solid rgba(30, 135, 240, 0.3); border-radius: 15px;">
+                        <h3 class="uk-card-title uk-text-bold uk-light">Vincular Archivos</h3>
+
+                        <form action="{{ path('app_categoria') }}" method="POST" class="uk-form-stacked">
+                            <input type="hidden" name="asociar_lote" value="1">
+
+                            <label class="uk-form-label">Selecciona las fotografías:</label>
+                            <div class="uk-panel uk-panel-scrollable uk-margin-small-top" style="height: 250px; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1); border-radius: 5px;">
+                                <ul class="uk-list uk-list-divider uk-margin-small-left">
+                                    {% for foto in todas_fotos %}
+                                        <li>
+                                            <label class="uk-flex uk-flex-middle">
+                                                <input class="uk-checkbox uk-margin-small-right" type="checkbox" name="fotos_ids[]" value="{{ foto.id }}">
+                                                <span class="uk-text-small">{{ foto.title }}</span>
+                                                <span class="uk-text-meta uk-margin-small-left">({{ foto.date|date('Y') }})</span>
+                                            </label>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+
+                            <div class="uk-margin">
+                                <label class="uk-form-label">Sector Destino</label>
+                                <select name="categoria_id" class="uk-select uk-border-rounded" style="background: #1a1a2e; color: #fff;">
+                                    {% for cat in categorias %}
+                                        <option value="{{ cat.id }}">{{ cat.nombre }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <button type="submit" class="uk-button uk-button-secondary uk-width-1-1 uk-border-rounded" style="background: #1e87f0;">
+                                Vincular Seleccionadas
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

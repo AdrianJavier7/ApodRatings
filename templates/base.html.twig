@@ -51,8 +51,10 @@
                                 </ul>
                             </div>
                         </li>
+                        {% if is_granted('ROLE_ADMIN') %}
                         <li><a href="/admin">Control</a></li>
-                        <li><a href="/categorias"></a>/li>
+                        {% endif %}
+                        <li><a href="/categorias">Categoria</a></li>
                     </ul>
 
                 </div>
