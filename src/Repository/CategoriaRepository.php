@@ -16,6 +16,17 @@ class CategoriaRepository extends ServiceEntityRepository
         parent::__construct($registry, Categoria::class);
     }
 
+
+    public function buscarPorNombre(string $termino): array
+    {
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.nombre LIKE :val')
+            ->setParameter('val', '%'.$termino.'%')
+            ->orderBy('c.nombre', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
     //    /**
     //     * @return Categoria[] Returns an array of Categoria objects
     //     */

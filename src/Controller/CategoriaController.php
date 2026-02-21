@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Categoria;
 use App\Repository\CategoriaRepository;
 use App\Repository\FotoAstralRepository;
+use App\Repository\RankingFotoRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -71,12 +72,95 @@ final class CategoriaController extends AbstractController
     #[Route('/categorias', name: 'app_categoria_mostrar')]
     public function categorias(
         Request $request,
-        EntityManagerInterface $entityManager,
-        CategoriaRepository $categoriaRepository,
-        FotoAstralRepository $fotoAstralRepository
+        CategoriaRepository $categoriaRepository
     ): Response {
+        $busqueda = $request->query->get('q');
+
+        if ($busqueda) {
+            $categorias = $categoriaRepository->buscarPorNombre($busqueda);
+        } else {
+            $categorias = $categoriaRepository->findAll();
+        }
+
         return $this->render('categoria/mostrar.html.twig', [
-            'categorias' => $categoriaRepository->findAll(),
+            'categorias' => $categorias,
         ]);
+    }
+
+    #[Route('/categoria/edit/{id}', name: 'app_categoria_edit', methods: ['POST'])]
+    public function edit(int $id, CategoriaRepository $catRepo, Request $request, EntityManagerInterface $em): Response
+    {
+        $categoria = $catRepo->find($id);
+
+        if (!$categoria) {
+            $this->addFlash('error', 'La categoría no existe.');
+            return $this->redirectToRoute('app_categoria');
+        }
+
+        $nuevoNombre = $request->request->get('nombre_categoria');
+        $nuevaFoto = $request->request->get('foto_categoria');
+
+        if ($nuevoNombre && $nuevaFoto) {
+            $categoria->setNombre($nuevoNombre);
+            $categoria->setImagen($nuevaFoto);
+
+            $em->flush();
+            $this->addFlash('success', 'Categoría actualizada correctamente.');
+        }
+
+        return $this->redirectToRoute('app_categoria');
+    }
+
+    #[Route('/categoria/quitar-foto/{categoriaId}/{fotoId}', name: 'app_categoria_quitar_foto')]
+    public function quitarFoto(
+        int $categoriaId,
+        int $fotoId,
+        CategoriaRepository $categoriaRepository,
+        FotoAstralRepository $fotoRepository,
+        RankingFotoRepository $rfRepo,
+        EntityManagerInterface $em
+    ): Response {
+        $categoria = $categoriaRepository->find($categoriaId);
+        $foto = $fotoRepository->find($fotoId);
+
+        if ($categoria && $foto) {
+            $rankingsFotosAEliminar = $rfRepo->createQueryBuilder('rf')
+                ->join('rf.ranking', 'r')
+                ->where('r.categoria = :categoria')
+                ->andWhere('rf.fotoAstral = :foto')
+                ->setParameter('categoria', $categoria)
+                ->setParameter('foto', $foto)
+                ->getQuery()
+                ->getResult();
+
+            foreach ($rankingsFotosAEliminar as $rf) {
+                $em->remove($rf);
+            }
+
+            // 2. Desvinculamos la foto de la categoría (tu lógica actual)
+            $categoria->removeFotoAstral($foto);
+
+            $em->flush();
+            $this->addFlash('success', 'Foto eliminada de la categoría y de los rankings de usuarios.');
+        }
+
+        return $this->redirectToRoute('app_categoria'); // O la ruta que prefieras
+    }
+
+    #[Route('/categoria/anyadir-foto', name: 'app_categoria_anyadir_foto', methods: ['POST'])]
+    public function anyadirFoto(Request $request, CategoriaRepository $catRepo, FotoAstralRepository $fotoRepo, EntityManagerInterface $em): Response
+    {
+        $categoriaId = $request->request->get('categoria_id');
+        $fotoId = $request->request->get('foto_id');
+
+        $categoria = $catRepo->find($categoriaId);
+        $foto = $fotoRepo->find($fotoId);
+
+        if ($categoria && $foto) {
+            $categoria->addFotoAstral($foto);
+            $em->flush();
+        }
+
+        return $this->redirectToRoute('app_categoria');
     }
 }

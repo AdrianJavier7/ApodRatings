@@ -4,17 +4,14 @@
     <div class="uk-section uk-light" style="background: radial-gradient(circle at center, #1a1a2e 0%, #0f0f1b 100%); min-height: 100vh;">
         <div class="uk-container uk-container-large">
 
-            {# Título superior con margen extra para que no se corte #}
             <h1 class="uk-heading-line uk-text-center uk-margin-xlarge-bottom">
                 <span style="color: #ffffff;">Panel de Categorización</span>
             </h1>
 
             <div class="uk-grid-match uk-child-width-1-2@m" uk-grid>
-
                 <div>
                     <div class="uk-card uk-card-default uk-card-body" style="background: rgba(15, 15, 27, 0.85); border: 1px solid rgba(255,255,255,0.1); border-radius: 15px;">
                         <h3 class="uk-card-title uk-text-bold" style="color: #ffffff;">Nueva Categoría</h3>
-
                         <form action="{{ path('app_categoria') }}" method="POST" class="uk-form-stacked">
                             <div class="uk-margin">
                                 <label class="uk-form-label" style="color: #e5e5e5;">Nombre</label>
@@ -24,51 +21,107 @@
                                 <label class="uk-form-label" style="color: #e5e5e5;">URL Portada</label>
                                 <input class="uk-input uk-border-rounded" name="foto_categoria" type="url" style="background: rgba(255,255,255,0.05); color: #fff; border: 1px solid rgba(255,255,255,0.2);" required>
                             </div>
-                            <button type="submit" class="uk-button uk-button-primary uk-width-1-1 uk-border-rounded">Guardar</button>
+                            <button type="submit" class="uk-button uk-button-primary uk-width-1-1 uk-border-rounded">Guardar Categoría</button>
                         </form>
                     </div>
                 </div>
 
-                {# CARD 2: VINCULAR ARCHIVOS #}
                 <div>
-                    <div class="uk-card uk-card-default uk-card-body" style="background: rgba(15, 15, 27, 0.85); border: 1px solid rgba(30, 135, 240, 0.3); border-radius: 15px;">
-                        <h3 class="uk-card-title uk-text-bold" style="color: #ffffff;">Vincular Archivos</h3>
+                    <div class="uk-card uk-card-default uk-card-body" style="background: rgba(15, 15, 27, 0.85); border: 1px solid rgba(255,255,255,0.1); border-radius: 15px;">
+                        <h3 class="uk-card-title uk-text-bold" style="color: #ffffff;">Editar Categorías Existentes</h3>
+                        <div class="uk-panel uk-panel-scrollable" style="height: 185px; background: transparent; border: none;">
+                            <ul class="uk-list uk-list-divider">
+                                {% for cat in categorias %}
+                                    <li class="uk-flex uk-flex-between uk-flex-middle">
+                                        <span class="uk-text-small">{{ cat.nombre }}</span>
+                                        <a href="#modal-edit-cat-{{ cat.id }}" uk-toggle class="uk-icon-button" uk-icon="pencil" style="background: rgba(255,255,255,0.1); color: #fff;"></a>
+                                    </li>
 
-                        <form action="{{ path('app_categoria') }}" method="POST" class="uk-form-stacked">
-                            <input type="hidden" name="asociar_lote" value="1">
-
-                            <label class="uk-form-label" style="color: #e5e5e5;">Selecciona las fotografías:</label>
-                            <div class="uk-panel uk-panel-scrollable uk-margin-small-top" style="height: 250px; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1); border-radius: 5px;">
-                                <ul class="uk-list uk-list-divider uk-margin-small-left">
-                                    {% for foto in todas_fotos %}
-                                        <li>
-                                            <label class="uk-flex uk-flex-middle">
-                                                <input class="uk-checkbox uk-margin-small-right" type="checkbox" name="fotos_ids[]" value="{{ foto.id }}">
-                                                <span class="uk-text-small" style="color: #fff;">{{ foto.title }}</span>
-                                                <span class="uk-text-meta uk-margin-small-left">({{ foto.date|date('Y') }})</span>
-                                            </label>
-                                        </li>
-                                    {% endfor %}
-                                </ul>
-                            </div>
-
-                            <div class="uk-margin">
-                                <label class="uk-form-label" style="color: #e5e5e5;">Sector Destino</label>
-                                <select name="categoria_id" class="uk-select uk-border-rounded" style="background: #1a1a2e; color: #fff; border: 1px solid rgba(255,255,255,0.2);">
-                                    {% for cat in categorias %}
-                                        <option value="{{ cat.id }}">{{ cat.nombre }}</option>
-                                    {% endfor %}
-                                </select>
-                            </div>
-
-                            <button type="submit" class="uk-button uk-button-secondary uk-width-1-1 uk-border-rounded" style="background: #1e87f0; color: #fff;">
-                                Vincular Seleccionadas
-                            </button>
-                        </form>
+                                    <div id="modal-edit-cat-{{ cat.id }}" uk-modal>
+                                        <div class="uk-modal-dialog uk-modal-body uk-background-secondary uk-light uk-border-rounded">
+                                            <button class="uk-modal-close-default" type="button" uk-close></button>
+                                            <h2 class="uk-modal-title">Editar Categoría</h2>
+                                            <form action="{{ path('app_categoria_edit', {id: cat.id}) }}" method="POST">
+                                                <div class="uk-margin">
+                                                    <label class="uk-form-label">Nombre</label>
+                                                    <input class="uk-input" name="nombre_categoria" type="text" value="{{ cat.nombre }}" required>
+                                                </div>
+                                                <div class="uk-margin">
+                                                    <label class="uk-form-label">URL Portada</label>
+                                                    <input class="uk-input" name="foto_categoria" type="url" value="{{ cat.imagen }}" required>
+                                                </div>
+                                                <p class="uk-text-right">
+                                                    <button class="uk-button uk-button-default uk-modal-close" type="button">Cancelar</button>
+                                                    <button class="uk-button uk-button-primary" type="submit">Actualizar Datos</button>
+                                                </p>
+                                            </form>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </ul>
+                        </div>
                     </div>
                 </div>
-
             </div>
+
+
+            <div class="uk-margin-large-top">
+                <div class="uk-card uk-card-secondary uk-card-body uk-border-rounded" style="background: rgba(15, 15, 27, 0.9); border: 1px solid rgba(30, 135, 240, 0.2);">
+                    <h3 class="uk-text-bold uk-light"> Gestión de Fotos por Categoría</h3>
+
+                    <ul uk-accordion="multiple: true">
+                        {% for cat in categorias %}
+                            <li class="uk-margin-small-bottom" style="border: 1px solid rgba(255,255,255,0.05); padding: 15px; border-radius: 10px;">
+                                <a class="uk-accordion-title uk-text-small uk-text-bold" href="#">
+                                    {{ cat.nombre|upper }} <span class="uk-text-meta">({{ cat.fotoAstrals|length }} fotos vinculadas)</span>
+                                </a>
+
+                                <div class="uk-accordion-content">
+                                    <form action="{{ path('app_categoria_anyadir_foto') }}" method="POST" class="uk-grid-small uk-margin-medium-bottom uk-flex-bottom" uk-grid>
+                                        <input type="hidden" name="categoria_id" value="{{ cat.id }}">
+                                        <div class="uk-width-expand">
+                                            <label class="uk-form-label uk-text-meta">Añadir foto a esta categoría:</label>
+                                            <select name="foto_id" class="uk-select uk-border-rounded" style="background: #0f0f1b; color: #fff; border-color: rgba(255,255,255,0.2);">
+                                                <option value="">-- Selecciona una foto para añadir --</option>
+                                                {% for foto in todas_fotos %}
+                                                    <option value="{{ foto.id }}">{{ foto.title }} ({{ foto.date|date('Y') }})</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <div class="uk-width-auto">
+                                            <button type="submit" class="uk-button uk-button-primary uk-border-rounded">Añadir</button>
+                                        </div>
+                                    </form>
+
+                                    <hr class="uk-divider-small">
+
+                                    <div class="uk-grid-small uk-child-width-1-2 uk-child-width-1-6@m" uk-grid>
+                                        {% for foto in cat.fotoAstrals %}
+                                            <div class="uk-text-center">
+                                                <div class="uk-inline-clip uk-transition-toggle uk-border-rounded" style="height: 100px; width: 100%;">
+                                                    <img src="{{ foto.url }}" style="height: 100%; width: 100%; object-fit: cover;" alt="{{ foto.title }}">
+                                                    <div class="uk-transition-fade uk-position-cover uk-overlay uk-overlay-primary uk-flex uk-flex-center uk-flex-middle">
+                                                        <a href="{{ path('app_categoria_quitar_foto', {categoriaId: cat.id, fotoId: foto.id}) }}"
+                                                           class="uk-icon-button uk-button-danger"
+                                                           uk-icon="icon: trash; ratio: 0.8"
+                                                           onclick="return confirm('¿Quitar esta foto? Se eliminará de los rankings de los usuarios para evitar conflictos de posición.')"></a>
+                                                    </div>
+                                                </div>
+                                                <p class="uk-text-meta uk-text-truncate uk-margin-small-top" style="font-size: 0.7rem;">{{ foto.title }}</p>
+                                            </div>
+                                        {% else %}
+                                            <div class="uk-width-1-1">
+                                                <p class="uk-text-meta uk-text-center uk-padding-small">No hay fotos en esta categoría.</p>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+
         </div>
     </div>
 {% endblock %}

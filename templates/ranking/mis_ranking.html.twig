@@ -3,7 +3,7 @@
 {% block title %}Mis Clasificaciones Cósmicas{% endblock %}
 
 {% block body %}
-    <div class="uk-section uk-light" style="background: #0f0f1b; min-height: 100vh;">
+    <div class="uk-section uk-light" style="background: radial-gradient(circle at center, #1a1a2e 0%, #0f0f1b 100%); min-height: 100vh;">
         <div class="uk-container">
             <h1 class="uk-text-bold uk-margin-large-bottom">Mis Rankings Guardados</h1>
 
@@ -14,33 +14,47 @@
             {% else %}
                 <div class="uk-grid-medium uk-child-width-1-1" uk-grid>
                     {% for ranking in rankings %}
-                        <div class="uk-card uk-card-secondary uk-card-body uk-border-rounded uk-margin-bottom" style="border-left: 5px solid #1e87f0;">
-                            <div class="uk-flex uk-flex-between uk-flex-middle uk-margin-small-bottom">
-                                <h2 class="uk-card-title uk-margin-remove uk-text-primary">{{ ranking.categoria.nombre }}</h2>
-                                <span class="uk-label uk-label-success">{{ ranking.rankingFotos|length }} Fotos Clasificadas</span>
+                        <div class="uk-card uk-card-secondary uk-card-body uk-border-rounded uk-margin-bottom" style="border: 1px solid rgba(255,255,255,0.1); background: rgba(15, 15, 27, 0.8);">
+                            <div class="uk-flex uk-flex-between uk-flex-middle uk-margin-bottom">
+                                <div>
+                                    <h2 class="uk-card-title uk-margin-remove uk-text-bold" style="color: #1e87f0;">{{ ranking.categoria.nombre|upper }}</h2>
+                                    <span class="uk-text-meta">{{ ranking.rankingFotos|length }} Fotos en el archivo</span>
+                                </div>
+
+                                {# BOTÓN EDITAR #}
+                                <div class="uk-flex uk-flex-middle">
+                                    <a href="/categoria/{{ ranking.categoria.id }}/ranking" class="uk-button uk-button-default uk-button-small uk-border-rounded" style="border-color: #1e87f0; color: #1e87f0;">
+                                        <span uk-icon="icon: pencil; ratio: 0.8" class="uk-margin-small-right"></span> Re-clasificar
+                                    </a>
+                                </div>
                             </div>
 
                             <div class="uk-overflow-auto">
                                 <table class="uk-table uk-table-divider uk-table-middle uk-table-small">
                                     <thead>
                                     <tr>
-                                        <th class="uk-table-shrink">Pos.</th>
-                                        <th class="uk-table-shrink">Vista</th>
-                                        <th>Título de la Foto</th>
+                                        <th class="uk-table-shrink">Orden</th>
+                                        <th class="uk-table-shrink">Imagen</th>
+                                        <th>Designación del Objeto</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     {% for rf in ranking.rankingFotos|sort((a, b) => a.posicion <=> b.posicion) %}
                                         <tr>
                                             <td>
-                                                <span class="uk-badge" style="background: white; width: 30px; height: 30px; line-height: 30px;">
+                                                <span class="uk-badge" style="
+                                                    background: {{ rf.posicion == 1 ? '#ffd700' : (rf.posicion == 2 ? '#c0c0c0' : (rf.posicion == 3 ? '#cd7f32' : 'rgba(255,255,255,0.1)')) }};
+                                                    color: {{ rf.posicion <= 3 ? '#000' : '#fff' }};
+                                                    font-weight: bold; width: 28px; height: 28px;">
                                                     {{ rf.posicion }}
                                                 </span>
                                             </td>
                                             <td>
-                                                <img src="{{ rf.fotoAstral.url }}" width="60" class="uk-border-rounded" alt="">
+                                                <div class="uk-inline-clip uk-border-rounded">
+                                                    <img src="{{ rf.fotoAstral.url }}" width="60" height="60" style="object-fit: cover;" alt="">
+                                                </div>
                                             </td>
-                                            <td class="uk-text-emphasis">{{ rf.fotoAstral.title }}</td>
+                                            <td class="uk-text-emphasis" style="font-size: 0.9rem;">{{ rf.fotoAstral.title }}</td>
                                         </tr>
                                     {% endfor %}
                                     </tbody>
@@ -53,7 +67,7 @@
 
             <div class="uk-margin-large-top">
                 <a href="{{ path('app_categoria_mostrar') }}" class="uk-button uk-button-primary uk-border-rounded">
-                    Clasificar más Sectores
+                    <span uk-icon="plus" class="uk-margin-small-right"></span> Explorar más Sectores
                 </a>
             </div>
         </div>

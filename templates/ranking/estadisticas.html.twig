@@ -7,52 +7,76 @@
         <div class="uk-container">
 
             <h1 class="uk-heading-line uk-text-center uk-margin-large-bottom">
-                <span>Ranking Global de Posiciones</span>
+                <span>Centro de Datos</span>
             </h1>
 
-            <div class="uk-grid-match uk-child-width-1-1" uk-grid>
+            <ul class="uk-flex-center uk-tab uk-margin-large-bottom" uk-tab="{connect: '#component-tab-left'}">
+                <li><a href="#">Top por Posición (Rankings)</a></li>
+                <li><a href="#">Top por Estrellas (Valoraciones)</a></li>
+            </ul>
+
+            <div id="component-tab-left" class="uk-switcher">
+
                 <div>
                     <div class="uk-card uk-card-secondary uk-card-body uk-border-rounded">
+                        <h3 class="uk-text-bold uk-margin-bottom">Fotos con mejor posición media</h3>
                         <table class="uk-table uk-table-divider uk-table-middle">
                             <thead>
                             <tr>
                                 <th class="uk-table-shrink">Top</th>
                                 <th>Imagen</th>
                                 <th>Título</th>
-                                <th class="uk-text-center">Posición Media</th>
+                                <th class="uk-text-center">Pos. Media</th>
                                 <th class="uk-text-center">Participaciones</th>
                             </tr>
                             </thead>
                             <tbody>
                             {% for s in stats %}
                                 <tr>
-                                    <td class="uk-text-bold">
-                                        {% if loop.index == 1 %}
-                                            <span class="uk-label uk-label-warning">🥇 1º</span>
-                                        {% elseif loop.index == 2 %}
-                                            <span class="uk-label uk-label-divider">🥈 2º</span>
-                                        {% else %}
-                                            #{{ loop.index }}
-                                        {% endif %}
-                                    </td>
-                                    <td>
-                                        <img src="{{ s.url }}" width="60" class="uk-border-rounded">
-                                    </td>
+                                    <td class="uk-text-bold">#{{ loop.index }}</td>
+                                    <td><img src="{{ s.url }}" width="60" class="uk-border-rounded"></td>
                                     <td class="uk-text-bold">{{ s.titulo }}</td>
-                                    <td class="uk-text-center">
-                                        <span class="uk-text-primary uk-text-lead">{{ s.mediaPosicion|number_format(1) }}</span>
-                                    </td>
-                                    <td class="uk-text-center">
-                                        <span class="uk-badge">{{ s.vecesRankeada }}</span> rankings
-                                    </td>
+                                    <td class="uk-text-center uk-text-primary uk-text-lead">{{ s.mediaPosicion|number_format(1) }}</td>
+                                    <td class="uk-text-center"><span class="uk-badge">{{ s.vecesRankeada }}</span></td>
                                 </tr>
                             {% endfor %}
                             </tbody>
                         </table>
                     </div>
                 </div>
-            </div>
 
+                <div>
+                    <div class="uk-card uk-card-secondary uk-card-body uk-border-rounded" style="border: 1px solid rgba(248, 206, 11, 0.2);">
+                        <h3 class="uk-text-bold uk-margin-bottom">Fotos con mejor puntuación</h3>
+                        <table class="uk-table uk-table-divider uk-table-middle">
+                            <thead>
+                            <tr>
+                                <th class="uk-table-shrink">Top</th>
+                                <th>Imagen</th>
+                                <th>Título</th>
+                                <th class="uk-text-center">Media Estrellas</th>
+                                <th class="uk-text-center">Total Votos</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for s in statsEstrellas %}
+                                <tr>
+                                    <td class="uk-text-bold">#{{ loop.index }}</td>
+                                    <td><img src="{{ s.url }}" width="60" class="uk-border-rounded"></td>
+                                    <td class="uk-text-bold">{{ s.titulo }}</td>
+                                    <td class="uk-text-center">
+                                        <span class="uk-text-warning uk-text-lead">{{ s.mediaEstrellas|number_format(1) }}</span>
+                                        <span uk-icon="icon: star; ratio: 0.8" class="uk-text-warning"></span>
+                                    </td>
+                                    <td class="uk-text-center"><span class="uk-badge" style="background: #f8ce0b; color: #000;">{{ s.totalVotos }}</span></td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
         </div>
     </div>
 {% endblock %}

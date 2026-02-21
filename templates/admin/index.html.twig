@@ -1,20 +1,47 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello AdminController!{% endblock %}
+{% block title %}Sincronización Completada{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+    <div class="uk-section uk-light" style="background: radial-gradient(circle at center, #1a1a2e 0%, #0f0f1b 100%); min-height: 100vh;">
+        <div class="uk-container uk-container-small">
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+            <div class="uk-text-center uk-margin-large-top">
+                <div class="uk-card uk-card-secondary uk-card-body uk-border-rounded"
+                     style="background: rgba(15, 15, 27, 0.9); border: 1px solid rgba(30, 135, 240, 0.3); box-shadow: 0 0 20px rgba(30, 135, 240, 0.1);">
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>C:/Users/Jadrix/PhpstormProjects/FoodRating/src/Controller/AdminController.php</code></li>
-        <li>Your template at <code>C:/Users/Jadrix/PhpstormProjects/FoodRating/templates/admin/index.html.twig</code></li>
-    </ul>
-</div>
+                    <div class="uk-margin-medium-bottom">
+                        <span uk-icon="icon: check; ratio: 3" style="color: #32d296;"></span>
+                    </div>
+
+                    <h1 class="uk-text-bold uk-margin-remove">Sincronización Exitosa</h1>
+                    <p class="uk-text-meta uk-text-uppercase" style="letter-spacing: 2px;">Los datos de la NASA han sido actualizados</p>
+
+                    <hr class="uk-divider-small uk-margin-medium">
+
+                    <p class="uk-text-large">Todos los elementos del archivo APOD se han procesado y cargado correctamente en la base de datos.</p>
+
+                    <div class="uk-margin-large-top">
+                        <div class="uk-flex uk-flex-center uk-grid-small" uk-grid>
+                            <div>
+                                <a href="{{ path('app_foto_astral') }}" class="uk-button uk-button-default uk-border-rounded">
+                                    Ver Catálogo
+                                </a>
+                            </div>
+                            <div>
+                                <a href="{{ path('app_categoria') }}" class="uk-button uk-button-primary uk-border-rounded">
+                                    Gestionar Sectores
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <p class="uk-margin-medium-top uk-text-meta">
+                    <span uk-icon="icon: history; ratio: 0.8"></span> Registro de sistema actualizado a las {{ "now"|date("H:i") }}
+                </p>
+            </div>
+
+        </div>
+    </div>
 {% endblock %}

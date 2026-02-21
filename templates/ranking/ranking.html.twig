@@ -6,68 +6,69 @@
     <div class="uk-section uk-light" style="background: radial-gradient(circle at center, #1a1a2e 0%, #0f0f1b 100%); min-height: 100vh;">
         <div class="uk-container uk-container-small">
 
-            {% if ya_rankeado %}
-                <div class="uk-text-center uk-margin-large-top">
-                    <div class="uk-card uk-card-secondary uk-card-body uk-border-rounded" style="border: 1px solid #1e87f0;">
-                        <span uk-icon="icon: lock; ratio: 2"></span>
-                        <h2 class="uk-text-bold">Sector Clasificado</h2>
-                        <p>Ya has completado este ranking.</p>
-                        <a href="{{ path('app_categoria_mostrar') }}" class="uk-button uk-button-default uk-border-rounded uk-margin-top">Volver</a>
+            <div class="uk-margin-large-bottom">
+                <a href="{{ path('app_mis_rankings') }}" class="uk-button uk-button-text">
+                    <span uk-icon="arrow-left"></span> Volver a mis rankings
+                </a>
+                <h1 class="uk-text-bold uk-margin-small-top">
+                    {{ ya_rankeado ? 'Editando Ranking:' : 'Clasificar:' }} {{ categoria.nombre }}
+                </h1>
+                <p class="uk-text-muted">Arrastra las fotos para cambiar el orden. La posición 1 es tu favorita.</p>
+
+                {% if ya_rankeado %}
+                    <div class="uk-alert-primary uk-border-rounded" uk-alert>
+                        <p><span uk-icon="info" class="uk-margin-small-right"></span> Ya habías clasificado este sector. Puedes reordenar y guardar los cambios.</p>
                     </div>
-                </div>
-            {% else %}
-                <div class="uk-margin-large-bottom">
-                    <a href="{{ path('app_categoria') }}" class="uk-button uk-button-text">
-                        <span uk-icon="arrow-left"></span> Cancelar
-                    </a>
-                    <h1 class="uk-text-bold uk-margin-small-top">Clasificar: {{ categoria.nombre }}</h1>
-                    <p class="uk-text-muted">Arrastra las fotos para ordenar tu ranking (la primera será tu favorita).</p>
-                </div>
+                {% endif %}
+            </div>
 
-                <form method="POST" id="ranking-form">
-                    {# Activamos uk-sortable para permitir arrastrar #}
-                    <div class="uk-grid-small uk-child-width-1-1" uk-grid uk-sortable="handle: .uk-sortable-handle; cls-custom: uk-box-shadow-large">
-                        {% for foto in categoria.fotoAstrals %}
-                            <div class="foto-item" data-id="{{ foto.id }}">
-                                <div class="uk-card uk-card-default uk-grid-collapse uk-child-width-1-2@s uk-overflow-hidden" uk-grid
-                                     style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px;">
+            <form method="POST" id="ranking-form">
+                <div class="uk-grid-small uk-child-width-1-1" uk-grid uk-sortable="handle: .uk-sortable-handle; cls-custom: uk-box-shadow-large">
 
-                                    {# Manejador para arrastrar #}
-                                    <div class="uk-sortable-handle uk-flex uk-flex-middle uk-padding-small" style="cursor: move; width: 40px;">
-                                        <span uk-icon="icon: table; ratio: 1.2"></span>
-                                    </div>
+                    {# Lógica de ordenación: si ya hay posiciones, ordenamos las fotos por ese valor #}
+                    {% set fotos = categoria.fotoAstrals %}
+                    {% if ya_rankeado %}
+                        {# Ordenamos la colección usando el array de posiciones_guardadas que viene del controller #}
+                        {% set fotos = fotos|sort((a, b) => (posiciones_guardadas[a.id] ?? 99) <=> (posiciones_guardadas[b.id] ?? 99)) %}
+                    {% endif %}
 
-                                    <div class="uk-card-media-left uk-cover-container" style="height: 80px; width: 120px;">
-                                        <img src="{{ foto.url }}" alt="{{ foto.title }}" uk-cover>
-                                    </div>
+                    {% for foto in fotos %}
+                        <div class="foto-item" data-id="{{ foto.id }}">
+                            <div class="uk-card uk-card-default uk-grid-collapse uk-child-width-1-2@s uk-overflow-hidden" uk-grid
+                                 style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px;">
 
-                                    <div class="uk-flex uk-flex-middle uk-flex-between uk-padding-small uk-width-expand">
-                                        <h4 class="uk-margin-remove uk-text-bold uk-text-truncate" style="max-width: 250px;">{{ foto.title }}</h4>
-
-
-                                        <div class="uk-badge ranking-number" style="background: white; color: black; width: 25px; height: 25px; line-height: 25px;">
-                                            {{ loop.index }}
-                                        </div>
-                                    </div>
-
-                                    <input type="hidden" name="posiciones[{{ foto.id }}]" class="posicion-input" value="{{ loop.index }}">
+                                <div class="uk-sortable-handle uk-flex uk-flex-middle uk-padding-small" style="cursor: move; width: 40px;">
+                                    <span uk-icon="icon: table; ratio: 1.2"></span>
                                 </div>
-                            </div>
-                        {% endfor %}
-                    </div>
 
-                    <div class="uk-margin-large-top uk-text-center">
-                        <button type="submit" class="uk-button uk-button-primary uk-button-large uk-border-rounded"
-                                style="background: white; border: none; padding: 0 60px; color: black;">
-                            Finalizar Ranking
-                        </button>
-                    </div>
-                </form>
-            {% endif %}
+                                <div class="uk-card-media-left uk-cover-container" style="height: 80px; width: 120px;">
+                                    <img src="{{ foto.url }}" alt="{{ foto.title }}" uk-cover>
+                                </div>
+
+                                <div class="uk-flex uk-flex-middle uk-flex-between uk-padding-small uk-width-expand">
+                                    <h4 class="uk-margin-remove uk-text-bold uk-text-truncate" style="max-width: 250px;">{{ foto.title }}</h4>
+
+                                    <div class="uk-badge ranking-number" style="background: white; color: black; width: 25px; height: 25px; line-height: 25px;">
+                                        {{ loop.index }}
+                                    </div>
+                                </div>
+
+                                <input type="hidden" name="posiciones[{{ foto.id }}]" class="posicion-input" value="{{ loop.index }}">
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <div class="uk-margin-large-top uk-text-center">
+                    <button type="submit" class="uk-button uk-button-primary uk-button-large uk-border-rounded"
+                            style="background: white; border: none; padding: 0 60px; color: black;">
+                        {{ ya_rankeado ? 'Actualizar Clasificación' : 'Finalizar Ranking' }}
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 
-    {# Script para actualizar los inputs ocultos cuando se suelta una foto #}
     <script>
         document.addEventListener('moved', function (e) {
             updateNumbers();
@@ -77,9 +78,7 @@
             const items = document.querySelectorAll('.foto-item');
             items.forEach((item, index) => {
                 const newPos = index + 1;
-                // Actualizamos el número visual
                 item.querySelector('.ranking-number').innerText = newPos;
-                // Actualizamos el valor del input que se envía por POST
                 item.querySelector('.posicion-input').value = newPos;
             });
         }

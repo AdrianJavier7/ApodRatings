@@ -59,13 +59,12 @@
                      uk-grid
                      uk-scrollspy="cls: uk-animation-slide-bottom-small; target: > div; delay: 100">
 
+                    {# Tarjeta 1: Categorías #}
                     <div>
                         <a href="{{ path('app_categoria_mostrar') }}" class="uk-link-toggle">
                             <div class="uk-card uk-card-secondary uk-card-body uk-card-hover uk-border-rounded uk-text-center uk-transition-toggle">
                                 <div class="uk-margin-bottom">
-                                    <div class="uk-inline">
-                                        <span class="uk-text-primary uk-transition-scale-up" uk-icon="icon: thumbnails; ratio: 3"></span>
-                                    </div>
+                                    <span uk-icon="icon: thumbnails; ratio: 3" style="color: #ffffff !important;"></span>
                                 </div>
                                 <h3 class="uk-card-title uk-text-bold uk-margin-remove" style="color: #fff;">Categorías</h3>
                                 <p class="uk-text-meta">Organiza tus astros favoritos</p>
@@ -73,13 +72,12 @@
                         </a>
                     </div>
 
+                    {# Tarjeta 2: Galería #}
                     <div>
                         <a href="/foto/astral" class="uk-link-toggle">
                             <div class="uk-card uk-card-secondary uk-card-body uk-card-hover uk-border-rounded uk-text-center uk-transition-toggle">
                                 <div class="uk-margin-bottom">
-                                    <div class="uk-inline">
-                                        <span class="uk-transition-scale-up" style="color: #f0506e;" uk-icon="icon: star; ratio: 3"></span>
-                                    </div>
+                                    <span uk-icon="icon: star; ratio: 3" style="color: #ffffff !important;"></span>
                                 </div>
                                 <h3 class="uk-card-title uk-text-bold uk-margin-remove" style="color: #fff;">Galería</h3>
                                 <p class="uk-text-meta">Lo mejor según la comunidad</p>
@@ -87,19 +85,20 @@
                         </a>
                     </div>
 
+                    {# Tarjeta 3: Comunidad #}
                     <div>
                         <a href="/foto/astral" class="uk-link-toggle">
                             <div class="uk-card uk-card-secondary uk-card-body uk-card-hover uk-border-rounded uk-text-center uk-transition-toggle">
                                 <div class="uk-margin-bottom">
-                                    <div class="uk-inline">
-                                        <span class="uk-transition-scale-up" style="color: #fff;" uk-icon="icon: users; ratio: 3"></span>
-                                    </div>
+                                    <span uk-icon="icon: users; ratio: 3" style="color: #ffffff !important;"></span>
                                 </div>
                                 <h3 class="uk-card-title uk-text-bold uk-margin-remove" style="color: #fff;">Comunidad</h3>
                                 <p class="uk-text-meta">Reseñas y perfiles</p>
                             </div>
                         </a>
                     </div>
+
+                </div>
 
                 </div>
             </div>
