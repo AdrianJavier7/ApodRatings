@@ -1,0 +1,91 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Panel de Supervisión General{% endblock %}
+
+{% block body %}
+    <div class="uk-section uk-light" style="background: radial-gradient(circle at center, #1a1a2e 0%, #0f0f1b 100%); min-height: 100vh;">
+        <div class="uk-container">
+
+            <h1 class="uk-heading-divider uk-text-bold">Control de Misión <span class="uk-text-meta uk-text-uppercase">Supervisión General</span></h1>
+
+            {# --- SECCIÓN 1: ESTADÍSTICAS GLOBALES --- #}
+            <div class="uk-grid-small uk-child-width-1-2@s uk-child-width-1-5@m uk-margin-large-bottom" uk-grid>
+                {% set items = [
+                    {'label': 'Elementos (APOD)', 'value': stats.total_fotos, 'icon': 'image', 'color': '#1e87f0'},
+                    {'label': 'Categorías', 'value': stats.total_categorias, 'icon': 'thumbnails', 'color': '#f0506e'},
+                    {'label': 'Exploradores', 'value': stats.total_usuarios, 'icon': 'users', 'color': '#32d296'},
+                    {'label': 'Rankings', 'value': stats.total_rankings, 'icon': 'list', 'color': '#faa05a'},
+                    {'label': 'Reseñas', 'value': stats.total_resenas, 'icon': 'comments', 'color': '#1e87f0'}
+                ] %}
+
+                {% for item in items %}
+                    <div>
+                        <div class="uk-card uk-card-secondary uk-card-body uk-border-rounded uk-text-center" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1);">
+                            <span uk-icon="icon: {{ item.icon }}; ratio: 1.5" style="color: {{ item.color }};"></span>
+                            <h3 class="uk-margin-small-top uk-margin-remove-bottom uk-text-bold">{{ item.value }}</h3>
+                            <p class="uk-text-meta uk-margin-remove-top">{{ item.label }}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <div class="uk-grid-large" uk-grid>
+                {# --- SECCIÓN 2: SUPERVISIÓN DE USUARIOS --- #}
+                <div class="uk-width-1-2@m">
+                    <div class="uk-card uk-card-secondary uk-card-body uk-border-rounded" style="background: rgba(15, 15, 27, 0.8);">
+                        <h3 class="uk-card-title uk-text-bold"><span uk-icon="users" class="uk-margin-small-right"></span> Últimos Usuarios</h3>
+                        <table class="uk-table uk-table-divider uk-table-middle uk-table-small">
+                            <thead>
+                            <tr>
+                                <th>Identificador</th>
+                                <th>Roles</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for u in ultimosUsuarios %}
+                                <tr>
+                                    <td>{{ u.userIdentifier }}</td>
+                                    <td>
+                                        {% for role in u.roles %}
+                                            <span class="uk-label uk-label-info" style="font-size: 0.6rem;">{{ role }}</span>
+                                        {% endfor %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                {# --- SECCIÓN 3: SUPERVISIÓN DE RANKINGS --- #}
+                <div class="uk-width-1-2@m">
+                    <div class="uk-card uk-card-secondary uk-card-body uk-border-rounded" style="background: rgba(15, 15, 27, 0.8);">
+                        <h3 class="uk-card-title uk-text-bold"><span uk-icon="history" class="uk-margin-small-right"></span> Rankings Recientes</h3>
+                        <ul class="uk-list uk-list-divider">
+                            {% for r in ultimosRankings %}
+                                <li class="uk-flex uk-flex-between">
+                            <span>
+                                <strong class="uk-text-primary">@{{ r.usuario.userIdentifier }}</strong>
+                                clasificó <span class="uk-text-italic">{{ r.categoria.nombre }}</span>
+                            </span>
+                                    <span class="uk-text-meta">{{ r.rankingFotos|length }} items</span>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            {# BOTONES DE ACCIÓN DIRECTA #}
+            <div class="uk-margin-large-top uk-text-center">
+                <a href="{{ path('app_categoria') }}" class="uk-button uk-button-primary uk-border-rounded uk-margin-small-right">
+                    <span uk-icon="settings"></span> Gestionar Categorías
+                </a>
+                <a href="{{ path('app_admin') }}" class="uk-button uk-button-default uk-border-rounded">
+                    <span uk-icon="refresh"></span> Sincronizar NASA
+                </a>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}

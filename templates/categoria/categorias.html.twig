@@ -34,7 +34,14 @@
                                 {% for cat in categorias %}
                                     <li class="uk-flex uk-flex-between uk-flex-middle">
                                         <span class="uk-text-small">{{ cat.nombre }}</span>
-                                        <a href="#modal-edit-cat-{{ cat.id }}" uk-toggle class="uk-icon-button" uk-icon="pencil" style="background: rgba(255,255,255,0.1); color: #fff;"></a>
+                                        <div>
+                                            <a href="#modal-edit-cat-{{ cat.id }}" uk-toggle class="uk-icon-button uk-margin-small-right" uk-icon="pencil" style="background: rgba(255,255,255,0.1); color: #fff;"></a>
+                                            <a href="{{ path('app_categoria_delete', {id: cat.id}) }}"
+                                               class="uk-icon-button uk-button-danger"
+                                               uk-icon="trash"
+                                               onclick="return confirm('¿Estás seguro de eliminar la categoría {{ cat.nombre }}? Se borrarán todos los rankings asociados.')"
+                                               style="background: rgba(240, 80, 110, 0.2); color: #f0506e; border: 1px solid rgba(240, 80, 110, 0.3);"></a>
+                                        </div>
                                     </li>
 
                                     <div id="modal-edit-cat-{{ cat.id }}" uk-modal>

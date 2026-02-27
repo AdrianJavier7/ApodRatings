@@ -163,4 +163,13 @@ final class CategoriaController extends AbstractController
 
         return $this->redirectToRoute('app_categoria');
     }
+
+    #[Route('/categoria/delete/{id}', name: 'app_categoria_delete')]
+    public function delete(Categoria $categoria, EntityManagerInterface $em): Response
+    {
+        $em->remove($categoria);
+        $em->flush();
+        $this->addFlash('success', 'Categoría eliminada correctamente.');
+        return $this->redirectToRoute('app_categoria');
+    }
 }
